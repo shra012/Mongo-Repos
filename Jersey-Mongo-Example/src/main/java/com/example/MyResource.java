@@ -10,9 +10,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.json.simple.JSONObject;
-
 import com.example.model.Friend;
+import com.example.model.FriendApplicationException;
 import com.example.service.FreindService;
 import com.example.service.FriendServiceImpl;
 
@@ -55,10 +54,7 @@ public class MyResource {
 		List<Friend> friendList  = null;
 		friendList =  service.findAll();
 		if(friendList == null || friendList.isEmpty()){
-			JSONObject error = new JSONObject();
-			error.put("Exception","CollectionNotFoundExcemption");
-			error.put("Message","No Content Found, Please check if the friends collection exists or the collection is empty");
-			return Response.serverError().entity(error).build();
+			return Response.serverError().entity(new FriendApplicationException("No Content Found, Please check if the friends collection exists or the collection is empty")).build();
 		}
 		return Response.ok().entity(friendList).build();
 	}
@@ -66,13 +62,12 @@ public class MyResource {
 	@PUT
 	@Path("Friends")
 	public Response insertFriends(List<Friend> friendList) {
-		if(friendList.size() == 1) {
-			service.insert(friendList.get(0));
-		}else if(friendList.size()>1){
-			service.insertAll(friendList);
+		
+		if(friendList==null || friendList.size() <= 0) {
+			return Response.serverError().entity(new FriendApplicationException("Request is null or empty")).build();
 		}else {
-			
+			friendList = service.insertAll(friendList);
 		}
-		return Response.ok().build();
+		return Response.ok().entity(friendList).build();
 	}
 }

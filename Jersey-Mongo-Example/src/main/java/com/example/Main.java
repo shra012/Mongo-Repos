@@ -1,11 +1,14 @@
 package com.example;
 
+import java.io.IOException;
+import java.net.URI;
+import java.util.logging.ConsoleHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import org.glassfish.grizzly.http.server.HttpServer;
 import org.glassfish.jersey.grizzly2.httpserver.GrizzlyHttpServerFactory;
 import org.glassfish.jersey.server.ResourceConfig;
-
-import java.io.IOException;
-import java.net.URI;
 
 /**
  * Main class.
@@ -23,7 +26,15 @@ public class Main {
         // create a resource config that scans for JAX-RS resources and providers
         // in com.example package
         final ResourceConfig rc = new ResourceConfig().packages("com.example");
-
+        
+        //
+        Logger log = Logger.getLogger("org.glassfish.grizzly.http.server.HttpHandler");
+        log.setLevel(Level.FINE);
+        log.setUseParentHandlers(false);
+        ConsoleHandler ch = new ConsoleHandler();
+        ch.setLevel(Level.ALL);
+        log.addHandler(ch);
+        
         // create and start a new instance of grizzly http server
         // exposing the Jersey application at BASE_URI
         return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
