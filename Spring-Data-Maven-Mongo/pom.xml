@@ -9,9 +9,9 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.keysoft</groupId>
-	<artifactId>mongodb</artifactId>
+	<artifactId>Spring-Data-Maven-Mongo</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>mongodb</name>
+	<name>Spring-Data-Maven-Mongo</name>
 	<description>Demo project for Spring Boot</description>
 
 	<properties>
