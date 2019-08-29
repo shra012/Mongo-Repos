@@ -33,7 +33,8 @@ public class FriendServiceImpl implements FreindService {
 
 	@Override
 	public List<Friend> insertAll(List<Friend> friendList) {
-		friendList = upsert(friendList);
+		collection.insertMany(friendList);
+		//friendList = upsert(friendList);
 		return friendList;
 	}
 

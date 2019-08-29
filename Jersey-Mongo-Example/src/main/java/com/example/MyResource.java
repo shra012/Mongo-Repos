@@ -1,6 +1,10 @@
 package com.example;
 
+import java.time.Duration;
+import java.time.Instant;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -27,6 +31,7 @@ import com.example.service.FriendServiceImpl;
 @Consumes(MediaType.APPLICATION_JSON)
 public class MyResource {
 
+	private final static Logger LOGGER = Logger.getLogger(MyResource.class.getName());
 	FreindService service = null;
 	/**
 	 * Method handling HTTP GET requests. The returned object will be sent
@@ -34,11 +39,11 @@ public class MyResource {
 	 *
 	 * @return String that will be returned as a text/plain response.
 	 */
-	
+
 	public MyResource() {
 		service = new FriendServiceImpl();
 	}
-	
+
 	@GET
 	@Path("hello")
 	public String getIt() {
@@ -58,16 +63,20 @@ public class MyResource {
 		}
 		return Response.ok().entity(friendList).build();
 	}
-	
+
 	@PUT
 	@Path("Friends")
 	public Response insertFriends(List<Friend> friendList) {
-		
+		Instant start = Instant.now(); 
 		if(friendList==null || friendList.size() <= 0) {
 			return Response.serverError().entity(new FriendApplicationException("Request is null or empty")).build();
 		}else {
 			friendList = service.insertAll(friendList);
 		}
+
+		Instant finish = Instant.now();
+		long timeElapsed = Duration.between(start, finish).toMillis();
+		LOGGER.log(Level.INFO, "Time Elapsed"+timeElapsed);
 		return Response.ok().entity(friendList).build();
 	}
 }

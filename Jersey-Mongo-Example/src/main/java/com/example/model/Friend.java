@@ -16,6 +16,11 @@ public class Friend {
 		this.lastName = lastName;
 	}
 	
+	public Friend(String firstName, String lastName) {
+		this.firstName = firstName;
+		this.lastName = lastName;
+	}
+	
 
 	@Override
 	public String toString() {
