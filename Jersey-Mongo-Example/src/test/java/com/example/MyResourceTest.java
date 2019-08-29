@@ -1,6 +1,8 @@
 package com.example;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
 
 import java.io.File;
 import java.io.IOException;
@@ -67,6 +69,13 @@ public class MyResourceTest {
        //Response response = invocationBuilder.get();
         ArrayList arrayList =  (ArrayList)response.readEntity(List.class);
         System.out.println(response.getStatus());
-        assertEquals("Got it!", arrayList.stream().findFirst());
+        if(arrayList.stream().findFirst().get() instanceof Friend) {
+        	Friend insertedFriend = (Friend) arrayList.stream().findFirst().get();
+        	Friend requestFriend = myObjects.stream().findFirst().get();
+        	assertNull(requestFriend.getId());
+        	assertNotNull(insertedFriend.getId());
+        	assertEquals(requestFriend.getFirstName(), insertedFriend.getFirstName());
+        }
+        
     }
 }
